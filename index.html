@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catedral Bot</title>
+    <style>
+        /* Estilos básicos */
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            text-align: center;
+            height: 100%;
+            scroll-behavior: smooth;
+        }
+
+        /* Animação de fade-in */
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Nome do bot piscando com efeito neon branco */
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+
+        h1 {
+            font-size: 4em;
+            color: transparent;
+            background: linear-gradient(to right, #ffffff, #ffffff); /* Branco */
+            background-clip: text;
+            margin-top: 30px;
+            animation: blink 1s infinite, fadeIn 2s ease-in-out;
+            text-shadow: 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #fff;
+        }
+
+        /* Menu */
+        .menu-icon {
+            display: none;
+            font-size: 2em;
+            color: #fff;
+            cursor: pointer;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+        }
+
+        .menu {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px;
+            background-color: #222;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 5;
+        }
+
+        .menu a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.2em;
+            padding: 10px 20px;
+            transition: all 0.3s;
+        }
+
+        .menu a:hover {
+            background-color: #fff;
+            color: #000;
+        }
+
+        /* Comandos principais */
+        .command-box {
+            display: inline-block;
+            padding: 20px;
+            margin: 15px;
+            font-size: 1.1em;
+            border: 2px solid #fff;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 250px;
+            transition: all 0.3s;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 1s forwards;
+        }
+
+        .command-box:hover {
+            cursor: pointer;
+            color: #fff;
+        }
+
+        /* Efeito de brilho nos comandos */
+        .command-box.selected {
+            box-shadow: 0 0 15px 5px #fff;
+        }
+
+        /* Créditos */
+        .credits {
+            display: none;
+            margin-top: 50px;
+        }
+
+        .credits p {
+            font-size: 1.2em;
+            color: #aaa;
+        }
+
+        /* Menu hamburguer em telas menores */
+        @media (max-width: 768px) {
+            .menu {
+                display: none;
+                flex-direction: column;
+            }
+
+            .menu.show {
+                display: flex;
+            }
+
+            .menu-icon {
+                display: block;
+            }
+        }
+
+        /* Comando Descrição */
+        .command-description {
+            font-size: 0.8em;
+            background-color: #ccc;
+            padding: 5px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Menu Hambúrguer -->
+    <div class="menu-icon" onclick="toggleMenu()">☰</div>
+    <div class="menu">
+        <a href="#add-bot" onclick="showBotAdd()">Adicionar Bot</a>
+        <a href="#who-created" onclick="showCreator()">Créditos</a>
+    </div>
+
+    <!-- Container principal -->
+    <div class="container">
+        <!-- Nome do Bot -->
+        <h1>Catedral</h1>
+
+        <!-- Subtítulo -->
+        <h2>O bot Discord mais elegante e poderoso para gerenciar seu servidor com estilo e eficiência.</h2>
+
+        <div class="spacer"></div>
+
+        <!-- Todos os comandos na aba principal -->
+        <div id="commandsMain">
+            <div class="command-box" onclick="selectCommand(this)">/antiraid – Ativa/desativa o modo antiraid no servidor.
+                <div class="command-description">Moderação</div>
+            </div>
+            <div class="command-box" onclick="selectCommand(this)">/antispam – Ativa/desativa a proteção contra spam.
+                <div class="command-description">Proteção</div>
+            </div>
+            <div class="command-box" onclick="selectCommand(this)">/antlink – Ativa/desativa o bloqueio de links não autorizados.
+                <div class="command-description">Segurança</div>
+            </div>
+            <div class="command-box" onclick="selectCommand(this)">/backup – Faz backup das configurações do bot e do servidor.
+                <div class="command-description">Gerenciamento</div>
+            </div>
+            <div class="command-box" onclick="selectCommand(this)">/clearlogs – Limpa os logs de atividades do servidor.
+                <div class="command-description">Moderação</div>
+            </div>
+            <div class="command-box" onclick="selectCommand(this)">/restrictnewusers – Restringe ações de novos membros por um período de tempo.
+                <div class="command-description">Segurança</div>
+            </div>
+            <div class="command-box" onclick="selectCommand(this)">/slowmode [tempo] – Ativa o modo lento no chat para evitar spam.
+                <div class="command-description">Moderação</div>
+            </div>
+            
+            <!-- Todos os 42 comandos listados -->
+            <div class="command-box" onclick="selectCommand(this)">/banlinks – Impede que os membros enviem links no chat.
+                <div class="command-description">Segurança</div>
+            </div>
+            <div class="command-box" onclick="selectCommand(this)">/setwelcome [mensagem] – Define uma mensagem de boas-vindas para novos membros.
+                <div class="command-description">Gerenciamento</div>
+            </div>
+            <div class="command-box" onclick="selectCommand(this)">/setleave [mensagem] – Define uma mensagem de despedida para membros que saem.
+                <div class="command-description">Gerenciamento</div>
+            </div>
+            <div class="command-box" onclick="selectCommand(this)">/rolecheck – Verifica os cargos de membros que estão tentando enviar links ou spam.
+                <div class="command-description">Moderação</div>
+            </div>
+            <div class="command-box" onclick="selectCommand(this)">/logdelete [id] – Exclui logs de mensagens específicas para evitar rastreamento de spam.
+                <div class="command-description">Moderação</div>
+            </div>
+            <div class="command-box" onclick="selectCommand(this)">/raidmode – Ativa um modo de proteção extra contra raids.
+                <div class="command-description">Segurança</div>
+            </div>
+            <div class="command-box" onclick="selectCommand(this)">/filter [termo] – Adiciona uma palavra-chave à lista de palavras bloqueadas.
+                <div class="command-description">Moderação</div>
+            </div>
+            <div class="command-box" onclick="selectCommand(this)">/clearmessages – Limpa mensagens de um usuário específico ou de todos.
+                <div class="command-description">Gerenciamento</div>
+            </div>
+            <div class="command-box" onclick="selectCommand(this)">/setantiflood [número] – Define o número máximo de mensagens que um usuário pode enviar por minuto antes de ser silenciado.
+                <div class="command-description">Moderação</div>
+            </div>
+            <div class="command-box" onclick="selectCommand(this)">/mute [usuário] – Muta um usuário por um tempo determinado.
+                <div class="command-description">Moderação</div>
+            </div>
+            <div class="command-box" onclick="selectCommand(this)">/unmute [usuário] – Desmuta um usuário.
+                <div class="command-description">Moderação</div>
+            </div>
+            <div class="command-box" onclick="selectCommand(this)">/warn [usuário] – Emite um aviso para um usuário por comportamento inadequado.
+                <div class="command-description">Moderação</div>
+            </div>
+            <div class="command-box" onclick="selectCommand(this)">/resetantiraid – Restaura as configurações padrão do bot de proteção antiraid.
+                <div class="command-description">Segurança</div>
+            </div>
+            <div class="command-box" onclick="selectCommand(this)">/setantiflood [número de mensagens] [tempo] – Define o número de mensagens que um usuário pode enviar em um tempo determinado antes de ser silenciado.
+                <div class="command-description">Moderação</div>
+            </div>
+            <div class="command-box" onclick="selectCommand(this)">/antibot – Ativa/desativa a proteção contra bots no servidor.
+                <div class="command-description">Segurança</div>
+            </div>
+            <div class="command-box" onclick="selectCommand(this)">/cleanspammers – Limpa todos os usuários que foram identificados como spammers no servidor.
+                <div class="command-description">Segurança</div>
+            </div>
+            <div class="command-box" onclick="selectCommand(this)">/banmassive – Banir automaticamente múltiplos usuários que entram em massa no servidor (geralmente usados em raids).
+                <div class="command-description">Segurança</div>
+            </div>
+            <div class="command-box" onclick="selectCommand(this)">/kickmassive – Kica múltiplos usuários de uma vez, se forem detectados como parte de um raid.
+                <div class="command-description">Segurança</div>
+            </div>
+            <div class="command-box" onclick="selectCommand(this)">/clearmuted – Limpa a lista de usuários que estão mutados no servidor.
+                <div class="command-description">Moderação</div>
+            </div>
+            <div class="command-box" onclick="selectCommand(this)">/logmute [usuário] – Registra os detalhes de um usuário que foi mutado (motivo, data, hora).
+                <div class="command-description">Moderação</div>
+            </div>
+            <div class="command-box" onclick="selectCommand(this)">/checkraid – Comando que verifica se há padrões de raid no servidor (muitos usuários entrando e saindo rapidamente).
+                <div class="command-description">Segurança</div>
+            </div>
+            <div class="command-box" onclick="selectCommand(this)">/checklinks – Verifica se há links suspeitos nos últimos x minutos.
+                <div class="command-description">Segurança</div>
+            </div>
+            <div class="command-box" onclick="selectCommand(this)">/antimassping – Impede que um grande número de membros seja mencionado ao mesmo tempo.
+                <div class="command-description">Segurança</div>
+            </div>
+            <div class="command-box" onclick="selectCommand(this)">/tempban [usuário] [tempo] – Aplica um banimento temporário a um usuário por comportamento inadequado.
+                <div class="command-description">Moderação</div>
+            </div>
+            <div class="command-box" onclick="selectCommand(this)">/tempmute [usuário] [tempo] – Aplica um mute temporário a um usuário por comportamento inadequado.
+                <div class="command-description">Moderação</div>
+            </div>
+            <div class="command-box" onclick="selectCommand(this)">/blockemojis – Impede o uso excessivo de emojis ou de emojis suspeitos (como spam de emojis).
+                <div class="command-description">Segurança</div>
+            </div>
+            <div class="command-box" onclick="selectCommand(this)">/setjoinlimit [número] – Limita o número de membros que podem entrar no servidor por hora para evitar raids.
+                <div class="command-description">Segurança</div>
+            </div>
+            <div class="command-box" onclick="selectCommand(this)">/blockmentions – Bloqueia menções a cargos ou canais específicos para evitar spam em massa.
+                <div class="command-description">Segurança</div>
+            </div>
+            <div class="command-box" onclick="selectCommand(this)">/checkduplicate – Verifica se há contas duplicadas ou com comportamentos de múltiplas tentativas de registro.
+                <div class="command-description">Segurança</div>
+            </div>
+            <div class="command-box" onclick="selectCommand(this)">/setantifloodduration [tempo] – Define o tempo após o qual o flood de mensagens é detectado e punido.
+                <div class="command-description">Moderação</div>
+            </div>
+            <div class="command-box" onclick="selectCommand(this)">/blacklistuser [usuário] – Coloca um usuário em uma lista negra, impedindo que ele realize certas ações, como enviar mensagens ou links.
+                <div class="command-description">Segurança</div>
+            </div>
+            <div class="command-box" onclick="selectCommand(this)">/setantifloodaction [ação] – Define a ação a ser tomada em caso de flood, como silenciar, kickar ou banir o usuário.
+                <div class="command-description">Moderação</div>
+            </div>
+            <div class="command-box" onclick="selectCommand(this)">/clearwarns [usuário] – Limpa todos os avisos dados a um usuário.
+                <div class="command-description">Moderação</div>
+            </div>
+            <div class="command-box" onclick="selectCommand(this)">/antiddos – Protege contra ataques DDoS ao detectar tráfego incomum ou picos de uso no servidor.
+                <div class="command-description">Segurança</div>
+            </div>
+            <div class="command-box" onclick="selectCommand(this)">/blockselfbots – Impede que bots automáticos sejam adicionados ao servidor.
+                <div class="command-description">Segurança</div>
+            </div>
+            <div class="command-box" onclick="selectCommand(this)">/antifake – Bloqueia contas com nomes de usuário ou informações suspeitas que possam ser indicativas de bots falsos.
+                <div class="command-description">Segurança</div>
+            </div>
+            <div class="command-box" onclick="selectCommand(this)">/checkactivity [usuário] – Verifica a atividade recente de um usuário no servidor para detectar comportamentos suspeitos.
+                <div class="command-description">Segurança</div>
+            </div>
+        </div>
+
+        <!-- Adicionar bot -->
+        <div id="addBot" style="display:none;">
+            <p>Bot em desenvolvimento. Em breve você poderá adicionar o <span style="color: #FF6666;">Catedral</span> ao seu servidor!</p>
+        </div>
+
+        <!-- Quem Criou -->
+        <div id="who-created" class="credits">
+            <h2>Quem Criou</h2>
+            <p><strong>Drax</strong> (Carroça) - 2025 | Discord ID: 1367910778019119135</p>
+        </div>
+
+    </div>
+
+    <script>
+        // Funções para mostrar/ocultar seções
+        function showCommands() {
+            document.getElementById("commandsMain").style.display = "block";
+            document.getElementById("addBot").style.display = "none";
+            document.getElementById("who-created").style.display = "none";
+        }
+
+        function showBotAdd() {
+            document.getElementById("addBot").style.display = "block";
+            document.getElementById("commandsMain").style.display = "none";
+            document.getElementById("who-created").style.display = "none";
+        }
+
+        function showCreator() {
+            document.getElementById("who-created").style.display = "block";
+            document.getElementById("commandsMain").style.display = "none";
+            document.getElementById("addBot").style.display = "none";
+        }
+
+        // Função para aplicar o efeito de brilho no comando clicado
+        function selectCommand(element) {
+            // Remove o brilho de todos os comandos
+            let commands = document.querySelectorAll('.command-box');
+            commands.forEach(function(command) {
+                command.classList.remove('selected');
+            });
+
+            // Aplica o brilho ao comando selecionado
+            element.classList.add('selected');
+        }
+
+        // Função para mostrar/ocultar o menu hambúrguer
+        function toggleMenu() {
+            const menu = document.querySelector(".menu");
+            menu.classList.toggle("show");
+        }
+    </script>
+
+</body>
+</html>
